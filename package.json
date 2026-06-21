@@ -1,0 +1,29 @@
+{
+  "name": "moxie-interview",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "墨写面试版 — AI 产品经理的观点工作台与可信内容工作流",
+  "scripts": {
+    "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"node server/index.mjs\"",
+    "server": "node server/index.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.5"
+  }
+}

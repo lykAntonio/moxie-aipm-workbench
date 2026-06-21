@@ -1,0 +1,22 @@
+#!/bin/sh
+# 墨写 · 防泄露 pre-commit 钩子：拦截把密钥/敏感串提交进仓库的行为。
+# 安装：sh scripts/install-hooks.sh   绕过（确需提交时）：git commit --no-verify
+
+# 仅扫描本次暂存的新增行（以 + 开头），避免误报历史内容
+added=$(git diff --cached --diff-filter=ACM -U0 | grep -E '^\+' | grep -vE '^\+\+\+')
+
+# 只在“= 后面跟着真实的、足够长的 key 值”时才拦截，避免误判普通变量赋值
+patterns='sk-[A-Za-z0-9]{20,}|(APPSECRET|APP_SECRET|app_secret)[[:space:]]*=[[:space:]]*["'\'']?[A-Za-z0-9._-]{16,}|DEEPSEEK_API_KEY[[:space:]]*=[[:space:]]*sk-[A-Za-z0-9]{10,}|APIMART_API_KEY[[:space:]]*=[[:space:]]*["'\'']?[A-Za-z0-9]{16,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+
+hits=$(printf '%s\n' "$added" | grep -nE "$patterns")
+
+if [ -n "$hits" ]; then
+  echo "⛔ 提交被拦截：检测到疑似密钥 / 敏感信息"
+  echo "--------------------------------------------"
+  printf '%s\n' "$hits" | head -20
+  echo "--------------------------------------------"
+  echo "请把密钥放进被 .gitignore 忽略的 .env，不要写进受控文件。"
+  echo "若确认是误报，可用：git commit --no-verify"
+  exit 1
+fi
+exit 0
