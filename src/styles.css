@@ -99,7 +99,13 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); }
 .view-switch .seg.on { background: #fff; color: var(--accent); box-shadow: var(--shadow); font-weight: 600; }
 
 /* ===== 输入区 ===== */
-.input-panel { padding-bottom: 16px; overflow-y: auto; flex: 0 1 auto; max-height: 68%; }
+.input-panel {
+  padding-bottom: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 0 1 auto;
+  max-height: 68%;
+}
 .field-label { display: block; margin: 14px 18px 6px; font-size: 12px; font-weight: 600; color: var(--text-2); }
 .field-label.compact { margin: 10px 0 6px; }
 .text-input {
@@ -113,6 +119,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); }
 .strategy-box {
   margin: 14px 18px 8px; padding: 12px; border: 1px solid var(--border);
   border-radius: 10px; background: var(--accent-soft);
+  min-width: 0;
 }
 .strategy-title { font-size: 14px; font-weight: 700; color: var(--accent); }
 .strategy-desc { font-size: 12px; color: var(--text-2); line-height: 1.6; margin-top: 3px; }
@@ -134,7 +141,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); }
 .probe-card ol, .probe-card ul { padding-left: 18px; }
 .probe-card li { margin: 4px 0; }
 
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 18px; min-width: 0; }
 .chip {
   border: 1px solid var(--border); background: #fcfbf9; color: var(--text);
   padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer;

@@ -212,7 +212,7 @@ export default function InputPanel({ loading, onGenerate, theme, onToggleTheme, 
       </label>
       <textarea
         className="text-input"
-        style={{ width: "100%", minHeight: 78, resize: "vertical", lineHeight: 1.5 }}
+        style={{ minHeight: 78, resize: "vertical", lineHeight: 1.5 }}
         placeholder="写新闻/时事类文章时，把真实资料粘进来，或贴新闻链接（自动抓取）。AI 会严格依据这些事实写，不再瞎编时间和数据。"
         value={reference}
         onChange={(e) => setReference(e.target.value)}
