@@ -79,7 +79,7 @@ export default function InputPanel({ loading, onGenerate, theme, onToggleTheme, 
       return;
     }
     if (!viewpoint.trim() || !experience.trim() || !uncertainty.trim()) {
-      alert("请先补全「核心观点」「真实观察 / 经验」和「不确定的问题」。面试版会把人的判断放在生成前面。");
+      alert("请先补全「核心观点」「真实观察 / 经验」和「不确定的问题」。墨写会把你的判断放在生成前面。");
       return;
     }
     onGenerate(buildParams());

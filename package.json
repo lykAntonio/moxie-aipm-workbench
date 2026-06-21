@@ -1,9 +1,9 @@
 {
-  "name": "moxie-interview",
+  "name": "moxie-aipm-workbench",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "墨写面试版 — AI 产品经理的观点工作台与可信内容工作流",
+  "description": "墨写 — AI 产品经理的观点工作台与可信内容工作流",
   "scripts": {
     "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"node server/index.mjs\"",
     "server": "node server/index.mjs",
