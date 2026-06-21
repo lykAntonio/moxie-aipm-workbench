@@ -5,8 +5,8 @@
   "type": "module",
   "description": "墨写 — AI 产品经理的观点工作台与可信内容工作流",
   "scripts": {
-    "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"node server/index.mjs\"",
-    "server": "node server/index.mjs",
+    "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"node server/dev.mjs\"",
+    "server": "node server/dev.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

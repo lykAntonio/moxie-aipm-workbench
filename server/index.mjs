@@ -6,11 +6,9 @@ import path from "node:path";
 import os from "node:os";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import dotenv from "dotenv";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-dotenv.config({ path: path.join(ROOT, ".env") });
 
 const PORT = Number(process.env.PORT || 8787);
 const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
@@ -773,9 +771,12 @@ function serveImage(res, urlPath) {
 }
 
 /* ---------- 路由 ---------- */
-const server = http.createServer(async (req, res) => {
+export async function handleRequest(req, res) {
   const url = new URL(req.url, `http://localhost:${PORT}`);
-  const pathname = url.pathname;
+  let pathname = url.pathname;
+  if (pathname.startsWith("/api/images/")) {
+    pathname = pathname.replace(/^\/api\/images/, "/images");
+  }
 
   try {
     if (req.method === "GET" && pathname === "/api/health") {
@@ -968,15 +969,21 @@ const server = http.createServer(async (req, res) => {
     const code = e.code === "NO_KEY" ? 400 : 500;
     return sendJSON(res, code, { error: String(e.message || e) });
   }
-});
+}
 
-server.listen(PORT, () => {
-  console.log("=".repeat(52));
-  console.log("  墨写 后端服务已启动  http://localhost:" + PORT);
-  console.log("  DeepSeek key: " + (DEEPSEEK_KEY ? "已配置 ✓" : "未配置 ✗（请填 .env）"));
-  console.log("  模型: " + DEEPSEEK_MODEL);
-  console.log("  联网检索: " + (TAVILY_KEY ? "Tavily 已配置 ✓" : "未配置（仅手动参考资料可用）"));
-  console.log("  出图脚本: " + (fs.existsSync(GENERATE_PY) ? "已找到 ✓" : "未找到 ✗"));
-  console.log("  公众号发布: " + (fs.existsSync(WECHAT_API_PY) ? "已找到 ✓" : "未找到 ✗ " + WECHAT_SKILL_DIR));
-  console.log("=".repeat(52));
-});
+export function startServer() {
+  http.createServer(handleRequest).listen(PORT, () => {
+    console.log("=".repeat(52));
+    console.log("  墨写 后端服务已启动  http://localhost:" + PORT);
+    console.log("  DeepSeek key: " + (DEEPSEEK_KEY ? "已配置 ✓" : "未配置 ✗（请填 .env）"));
+    console.log("  模型: " + DEEPSEEK_MODEL);
+    console.log("  联网检索: " + (TAVILY_KEY ? "Tavily 已配置 ✓" : "未配置（仅手动参考资料可用）"));
+    console.log("  出图脚本: " + (fs.existsSync(GENERATE_PY) ? "已找到 ✓" : "未找到 ✗"));
+    console.log("  公众号发布: " + (fs.existsSync(WECHAT_API_PY) ? "已找到 ✓" : "未找到 ✗ " + WECHAT_SKILL_DIR));
+    console.log("=".repeat(52));
+  });
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  startServer();
+}
